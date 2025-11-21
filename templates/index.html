@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block heading %}
+    <div class="pageTitle">
+        <h1>The heart of</h1>
+        <h1>youth rugby in</h1>
+        <h1 style="color: #00A755">Devon</h1>
+    </div>
+{% endblock %}
+x
+{% block content %}
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-6 order-1 order-md-0">
+                <h2 class="headings">Example Heading</h2>
+                <p class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec vitae lorem magna. Suspendisse sed nulla eget velit vulputate auctor sed quis ante. Pellentesque porta enim mauris, ac tristique eros vestibulum eget. Nullam fringilla, erat eget vehicula feugiat, turpis ante blandit diam, ac sollicitudin lectus nisl vitae est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Morbi sodales metus malesuada consequat volutpat. Ut id tincidunt ipsum, ac condimentum arcu. Sed convallis nulla quam, ac luctus sapien feugiat quis. Suspendisse et mi aliquet justo consequat feugiat. Integer dolor mauris, rutrum rutrum nunc quis, mattis dignissim mi. Praesent tempus elit fringilla porta sagittis. Etiam rhoncus risus vitae nulla placerat, in aliquam enim tincidunt.</p>
+                <p class="text">Fusce vitae lorem sed arcu elementum aliquet vel in nibh. Ut sit amet dapibus urna, nec condimentum tellus. Proin mollis, nisi at consectetur blandit, tellus nunc feugiat orci, non blandit urna nisi vel enim. Aenean sodales mollis fermentum. Nulla fermentum tortor in massa vulputate, eget facilisis nibh commodo. Morbi convallis est sed dui tempus pretium. Curabitur at blandit libero, in blandit risus. Quisque suscipit ut elit et pretium.</p>
+            </div>
+            <div class="col-md-6">
+                <img src="/static/PlayerRunning.png" class="img-fluid" style="float:right; width: 100%" alt="running past another player with the ball in their hands">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-6">
+                <a href="/about">
+                    <button class="btn btn-success w-100" style="background-color: #00A755">FIND OUT MORE</button>
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="/contact">
+                    <button class="btn btn-secondary w-100" style="background-color: black">CONTACT US</button>
+                </a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
