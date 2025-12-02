@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ current_user.name }}{% endblock %}
+
+{% block heading %}
+<div class="pageTitle">
+    <h1>Add</h1>
+    <h1 style="color: #00A755">Season</h1>
+</div>
+{% endblock %}
+{% block content %}<div>
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="{{ category }}">
+        {{message.text}}
+        {% if message.link %}
+            Go to <a href="{{message.link}}">{{ message.linktext }}</a>.
+        {%endif%}
+    </div>
+    {%endfor%}
+    {% endif %}
+    {% endwith %}
+    <div style="margin-top: 2rem">
+        <form method="POST" action="/add-season">
+            <div>
+                <input type="text" name="name" placeholder="New Season Name" class="form-control">
+            </div>
+            <button class="btn btn-success" style="margin-top:1rem">Add Season</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}{{ current_user.name }}{% endblock %}
+
+{% block heading %}
+<div class="pageTitle">
+    <h1>Welcome</h1>
+    <h1 style="color: #00A755"> {{ current_user.name }}</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}

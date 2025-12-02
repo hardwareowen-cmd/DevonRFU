@@ -17,7 +17,7 @@ html, body{
 .nav {
     font-family: "Barlow Condensed", sans-serif;
     text-transform: uppercase;
-    font-size: 20px;
+    font-size: 1.5rem;
     backdrop-filter: blur(10px) brightness(1.5);
     box-shadow: 0px 4px 5px grey;
     ;
@@ -69,7 +69,16 @@ html, body{
     font-size: 1.4rem;
 }
 
+form{
+    margin-top: 1rem;
+}
 
+form input{
+    margin-top: 1rem;
+}
+.alert{
+    margin-top: 1rem;
+}
 
 
 

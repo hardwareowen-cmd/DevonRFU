@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block script %}
+    <script>
+    async function filterLeagues() {
+        const select_elm = document.getElementById("league")
+        var select = document.getElementById("season").value;
+        let response = await fetch('leagueinfofetch');
+        let leagues = await response.json();
+        let arr = []
+
+        leagues.forEach(l => {
+            if (l.season_id == select){
+                arr.push(l)
+            }
+        })
+
+        select_elm.innerHTML=""
+        arr.forEach(league => {
+            const option = document.createElement("option");
+            option.value = league.id
+            option.textContent = league.name;
+            select_elm.appendChild(option);
+        });
+    }
+
+    </script>
+{% endblock %}
+{% block title %}{{ current_user.name }}{% endblock %}
+
+{% block heading %}
+<div class="pageTitle">
+    <h1>Add</h1>
+    <h1 style="color: #00A755">Fixture</h1>
+</div>
+{% endblock %}
+{% block content %}
