@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):  # [web:21][web:24]
 class Club(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
-    ageGroup = db.Column(db.String(120), db.ForeignKey('league.ageGroup'), nullable=False)
+    ageGroup = db.Column(db.String(120), nullable=False)
     league = db.relationship('League', back_populates='clubs')
     logo = db.Column(db.String(120), nullable=False)
 
@@ -43,8 +43,7 @@ class League(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     ageGroup = db.Column(db.String(120), nullable=False)
-    season_id = db.Column(db.Integer, db.ForeignKey('season.id'), nullable=False)
-    season = db.relationship('Season', backref='leagues')
+    season_id = db.Column(db.Integer, nullable=False)
     clubs = db.relationship('Club', back_populates='league')
     achived = db.Column(db.Boolean, nullable=False, default=False)
     def set_LeagueAgeGroup(self, ageGroup):
