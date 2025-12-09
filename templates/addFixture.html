@@ -16,11 +16,70 @@
         })
 
         select_elm.innerHTML=""
+        const defaultvalue = document.createElement("option")
+        defaultvalue.textContent = "Select League"
+        select_elm.appendChild(defaultvalue)
         arr.forEach(league => {
             const option = document.createElement("option");
             option.value = league.id
             option.textContent = league.name;
             select_elm.appendChild(option);
+        });
+    }
+    async function filterClubs() {
+        const select_elm = document.getElementById("home")
+        var select = document.getElementById("league").value;
+        let response = await fetch('clubinfofetch');
+        console.log(response)
+        let clubs = await response.json();
+        console.log(clubs)
+        let arr = []
+
+        clubs.forEach(l => {
+            if (l.league == select){
+                arr.push(l)
+            }
+        })
+
+        select_elm.innerHTML=""
+
+        const defaultvalue = document.createElement("option")
+        defaultvalue.textContent = "Select Home Team"
+        select_elm.appendChild(defaultvalue)
+
+        arr.forEach(club => {
+            const option = document.createElement("option");
+            option.value = club.id
+            option.textContent = club.name;
+            select_elm.appendChild(option);
+        });
+    }
+    async function filterawayclubs() {
+        const select_elm = document.getElementById("away")
+        const homeTeam = document.getElementById("home").value;
+        var select = document.getElementById("league").value;
+        let response = await fetch('clubinfofetch');
+        let clubs = await response.json();
+        let arr = []
+        clubs.forEach(l => {
+            if (l.league == select){
+                arr.push(l)
+            }
+        })
+
+        select_elm.innerHTML=""
+
+        const defaultvalue = document.createElement("option")
+        defaultvalue.textContent = "Select Away Team"
+        select_elm.appendChild(defaultvalue)
+
+        arr.forEach(club => {
+            if (club.id != homeTeam) {
+                const option = document.createElement("option");
+                option.value = club.id
+                option.textContent = club.name;
+                select_elm.appendChild(option);
+            }
         });
     }
 
@@ -35,3 +94,60 @@
 </div>
 {% endblock %}
 {% block content %}
+    <div>
+        {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+        {% for category, message in messages %}
+            <div class="{{ category }}">
+                {{message.text}}
+                {% if message.link %}
+                    Go to <a href="{{message.link}}">{{ message.linktext }}</a>.
+                {%endif%}
+            </div>
+        {%endfor%}
+        {% endif %}
+        {% endwith %}
+        <form method="POST" style="margin-top: 2rem" action="/add-Fixtures">
+            <div>
+                <label style="margin-top: 1rem">Select Season
+                    <select class="form-select" aria-label="Season Select" name="season" id="season" onchange="filterLeagues()">
+                        <option value="">Select Season</option>
+                        {% for season in seasons %}
+                            <option value="{{ season.id }}">{{ season.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+                <label style="margin-top: 1rem">Select League
+                    <select class="form-select" aria-label="League Select" name="league" id="league" onchange="filterClubs()">
+                        <option value="">Select League</option>
+                    </select>
+                </label>
+            </div>
+            <div>
+                <label style="margin-top: 1rem">Select Home Team
+                    <select class="form-select" aria-label="Home Select" name="Home" id="home" onchange="filterawayclubs()">
+                        <option value="">Select Home Team</option>
+                    </select>
+                </label>
+                <label style="margin-top: 1rem">Select Away Team
+                    <select class="form-select" aria-label="Away Select" name="Away" id="away">
+                        <option value="">Select Away Team</option>
+                    </select>
+                </label>
+            </div>
+            <div>
+                <input type="text" name="Pitch Name" placeholder="Pitch Name" class="form-control">
+            </div>
+            <div>
+                <input type="text" name="Pitch Postcode" placeholder="Pitch Postcode" class="form-control">
+            </div>
+            <div>
+                <input type="text" name="Date" placeholder="Match Date (dd/mm/yyyy)" class="form-control">
+            </div>
+            <div>
+                <input type="text" name="Time" placeholder="Kickoff time e.g 3pm" class="form-control">
+            </div>
+            <button class="btn btn-success" style="margin-top:1rem">Add Fixture</button>
+        </form>
+    </div>
+{% endblock %}

@@ -29,7 +29,7 @@ class Club(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     ageGroup = db.Column(db.String(120), nullable=False)
-    league = db.relationship('League', back_populates='clubs')
+    league = db.Column(db.Integer, nullable=False)
     logo = db.Column(db.String(120), nullable=False)
 
     def set_ClubAgeGroup(self, ageGroup):
@@ -44,7 +44,6 @@ class League(db.Model):
     name = db.Column(db.String(120), nullable=False)
     ageGroup = db.Column(db.String(120), nullable=False)
     season_id = db.Column(db.Integer, nullable=False)
-    clubs = db.relationship('Club', back_populates='league')
     achived = db.Column(db.Boolean, nullable=False, default=False)
     def set_LeagueAgeGroup(self, ageGroup):
         self.ageGroup = ageGroup

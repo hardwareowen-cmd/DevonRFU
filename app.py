@@ -4,6 +4,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from flask_login import logout_user, current_user, login_required, login_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
 from Decorators import access_level_required
+import pandas as pd
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # simple file DB [web:28]
@@ -32,14 +33,6 @@ def about():
 @app.route('/contact')
 def contact():
     return render_template("contact.html")
-
-@app.route('/boys')
-def boys():
-    return render_template("boys.html")
-
-@app.route('/girls')
-def girls():
-    return render_template("girls.html")
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -129,23 +122,19 @@ def add_club_admin():
 @app.route('/add-club',methods=["GET", "POST"])
 @access_level_required(2)
 def add_club():
-    seasons = []
     if request.method == "POST":
         name = request.form.get("name")
         leagueID = request.form.get("league")
-        league = db.session.query(League).get(league_id)
+        league = db.session.query(League).get(leagueID)
         if league:
             age_group = league.ageGroup
-            print(f"Age group for league {league_id}: {age_group}")
         logo = request.form.get("logo")
-        if Club.query.filter_by(name=name, ageGroup=ageGroup).first():
+        if Club.query.filter_by(name=name, ageGroup=age_group).first():
             flash({"text":"Club already exists"}, category="alert alert-danger")
             return redirect(url_for("add_club"))
 
-        club= Club(name=name)
-        club.set_ClubAgeGroup(ageGroup)
-        league_obj = db.session.query(League).filter_by(name=leagueID).first()
-        club.set_ClubLeague(league_obj)
+        club= Club(name=name, ageGroup=age_group)
+        club.set_ClubLeague(league.id)
         club.set_ClubLogo(logo)
 
         with app.app_context():
@@ -165,6 +154,12 @@ def leagueinfofetch():
     leagues = [{"id":x.id,"name": x.name, "season_id": x.season_id} for x in League.query.all()]
     leagues = jsonify(leagues)
     return(leagues)
+@app.route('/clubinfofetch')
+@access_level_required(2)
+def clubinfofetch():
+    clubs = [{"id":x.id,"name": x.name, "league":x.league} for x in Club.query.all()]
+    clubs = jsonify(clubs)
+    return(clubs)
 
 @app.route('/add-league',methods=["GET", "POST"])
 @access_level_required(2)
@@ -215,16 +210,55 @@ def add_season():
 @access_level_required(2)
 def add_fixtures():
     if request.method == "POST":
-        League = request.form.get("League")
+        League = request.form.get("league")
         Home = request.form.get("Home")
         Away = request.form.get("Away")
-        Pitch = request.form.get("Pitch")
+        Pitch_Name = request.form.get("Pitch Name")
+        Pitch_Postcode = request.form.get("Pitch Postcode")
         Date = request.form.get("Date")
         Time = request.form.get("Time")
     seasons = Season.query.all()
+    try:
+        if os.path.exists(f"./static/Fixtures/Fixtures_{League}.csv"):
+            print("Fixtures already exists")
+            pd.DataFrame({
+                "Home": Home,
+                "Away": Away,
+                "Pitch Name": Pitch_Name,
+                "Pitch Postcode": Pitch_Postcode,
+                "Date": Date,
+                "Time": Time,
+                "Home Tries": 0,
+                "Home Total Points": 0,
+                "Away Tries": 0,
+                "Away Total Points": 0,
+            }, index=[0]).to_csv(f"./static/Fixtures/Fixtures_{League}.csv", mode="a", index=False,header=False)
+            flash({"text": "Fixture Created Successfully"}, category="alert alert-success")
+            return redirect(url_for("add_fixtures"))
+        else:
+            pd.DataFrame({
+                "Home": Home,
+                "Away": Away,
+                "Pitch Name": Pitch_Name,
+                "Pitch Postcode": Pitch_Postcode,
+                "Date": Date,
+                "Time": Time,
+                "Home Tries": 0,
+                "Home Total Points": 0,
+                "Away Tries": 0,
+                "Away Total Points": 0,
+            }, index=[0]).to_csv(f"./static/Fixtures/Fixtures_{League}.csv",mode="a", index=False)
+            flash({"text": "Fixture Created Successfully"}, category="alert alert-success")
+            return redirect(url_for("add_fixtures"))
+
+    except Exception as e:
+        print(e)
     return render_template('addFixture.html',seasons=seasons)
 @app.route('/Fixtures',methods=["GET", "POST"])
 def fixtures():
-    return "hello"
+    league = request.form.get("league")
+    file = f"./static/Fixtures/Fixtures_{league}.csv"
+    seasons = Season.query.all()
+    return render_template("fixtures.html", file=file, seasons=seasons)
 if __name__ == '__main__':
     app.run(debug=True)

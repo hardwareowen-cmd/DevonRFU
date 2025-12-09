@@ -16,6 +16,9 @@
         })
 
         select_elm.innerHTML=""
+        const defaultvalue = document.createElement("option")
+        defaultvalue.textContent = "Select League"
+        select_elm.appendChild(defaultvalue)
         arr.forEach(league => {
             const option = document.createElement("option");
             option.value = league.id
@@ -65,21 +68,21 @@
             </div>
             <div>
                 <label style="margin-top: 1rem">Select League
-                    <select class="form-select" aria-label="League Age Group Select" name="league" id="league">
+                    <select class="form-select" aria-label="League Select" name="league" id="league">
 
                     </select>
                 </label>
             </div>
             <div>
                 <label style="margin-top: 1rem">Club Logos File
-                    <select class="form-select" aria-label="League Age Group Select" name="logo">
+                    <select class="form-select" aria-label="Select Club Logo" name="logo">
                         {% for logo in logos %}
                             <option value={{ logo }}>{{ logo }}</option>
                         {% endfor %}
                     </select>
                 </label>
             </div>
-            <button class="btn btn-success" style="margin-top:1rem">Add Season</button>
+            <button class="btn btn-success" style="margin-top:1rem">Add Club</button>
         </form>
     </div>
 </div>
