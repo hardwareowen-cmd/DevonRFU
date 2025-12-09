@@ -1,11 +1,13 @@
 from functools import wraps
-from app import current_user
+
 from flask import jsonify, redirect, url_for
 
 def access_level_required(level, requestonly=False):
+
     def decorator(f):
         @wraps(f)
         def decorated_func(*args, **kwargs):
+            from app import current_user
             if current_user.is_authenticated and current_user.adminLevel >= level:
                 return f(*args, **kwargs)
             if requestonly:
