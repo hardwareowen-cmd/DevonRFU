@@ -261,4 +261,4 @@ def fixtures():
     seasons = Season.query.all()
     return render_template("fixtures.html", file=file, seasons=seasons)
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
