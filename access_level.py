@@ -1,5 +1,5 @@
 from functools import wraps
-from app import current_user
+from flask_login import current_user
 from flask import jsonify, redirect, url_for
 
 def access_level_requireds(level, requestonly=False):
