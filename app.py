@@ -2,14 +2,15 @@
 import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, current_user, login_required, login_user, LoginManager
-from flask_sqlalchemy import SQLAlchemy
 from access_level import access_level_required
 import pandas as pd
+from extensions import db
 
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # simple file DB [web:28]
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = "change-this-secret-key"
+db.init_app(app)
 
 from models import User, Club, League, Season
 
