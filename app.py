@@ -11,7 +11,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///app.db"  # simple file DB [we
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.secret_key = "change-this-secret-key"
 
-db = SQLAlchemy(app)
 from models import User, Club, League, Season
 
 login_manager = LoginManager()
