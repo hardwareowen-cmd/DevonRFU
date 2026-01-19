@@ -2,7 +2,7 @@ from functools import wraps
 from app import current_user
 from flask import jsonify, redirect, url_for
 
-def access_level_required(level, requestonly=False):
+def access_level_requireds(level, requestonly=False):
     def decorator(f):
         @wraps(f)
         def decorated_func(*args, **kwargs):
