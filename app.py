@@ -3,7 +3,7 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_login import logout_user, current_user, login_required, login_user, LoginManager
 from flask_sqlalchemy import SQLAlchemy
-from access_level import access_level_required
+from access_level import access_level_requireds
 import pandas as pd
 
 app = Flask(__name__)
